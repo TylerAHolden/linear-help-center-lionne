@@ -8,6 +8,7 @@ const { sendErrorToSlack } = require('../error_log');
 
 const Constants = require('../constants');
 const Config = require('../config.json');
+const { oxfordJoinArray } = require('../utils/oxfordJoinArray');
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
@@ -81,7 +82,11 @@ exports.handler = async (event, context, callback) => {
                   teamId: "${Config.teamId}",
                   projectId: "${Config.projectId}",
                   labelIds: ${JSON.stringify(getTicketLabelIds(ticketLabels))},
-                  assigneeId: "${Config.defaultAssigneeId}",
+                  ${
+                    Config.defaultAssigneeId
+                      ? `assigneeId: "${Config.defaultAssigneeId}",`
+                      : ``
+                  }
                   stateId: "${Config.inboxStateId}",
                 })
               {
@@ -127,13 +132,22 @@ exports.handler = async (event, context, callback) => {
 
     const response = createTicketRequest.data.data?.issueCreate;
 
-    if (!response?.success || !response?.issue?.id) {
+    if (
+      createTicketRequest.data.errors ||
+      !response?.success ||
+      !response?.issue?.id
+    ) {
+      const errorMessage = oxfordJoinArray(
+        createTicketRequest?.data?.errors.map((err) => err.message) || [],
+        'and',
+        Constants.ticketCreateFailMessage
+      );
       return {
         headers: headers,
         statusCode: 200,
         body: JSON.stringify({
           success: false,
-          msg: Constants.ticketCreateFailMessage,
+          msg: errorMessage,
         }),
       };
     }

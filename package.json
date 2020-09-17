@@ -5,11 +5,19 @@
   "dependencies": {
     "axios": "^0.19.2",
     "dotenv": "^8.0.0",
-    "netlify-lambda": "^1.6.3"
+    "netlify-lambda": "^1.6.3",
+    "next": "9.5.3",
+    "next-react-svg": "1.1.2",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "styled-components": "^5.2.0"
   },
   "scripts": {
-    "build": "netlify-lambda build functions",
-    "serve": "netlify-lambda serve functions"
+    "build-fns": "netlify-lambda build functions",
+    "serve-fns": "netlify-lambda serve functions",
+    "dev": "next dev",
+    "build": "yarn build-fns && next build",
+    "start": "next start"
   },
   "description": "Help Center Functions"
 }
