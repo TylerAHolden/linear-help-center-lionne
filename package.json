@@ -16,7 +16,7 @@
     "build-fns": "netlify-lambda build functions",
     "serve-fns": "netlify-lambda serve functions",
     "dev": "next dev",
-    "build": "yarn build-fns && next build",
+    "build": "yarn build-fns && next build && next export",
     "start": "next start"
   },
   "description": "Help Center Functions"
