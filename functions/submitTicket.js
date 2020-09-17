@@ -1,13 +1,12 @@
 require('dotenv').config();
 
-const { LINEAR_API_TOKEN } = process.env;
+const { LINEAR_API_TOKEN, LINEAR_CONFIG } = process.env;
 
 const axios = require('axios');
 
 const { sendErrorToSlack } = require('../error_log');
 
 const Constants = require('../constants');
-const Config = require('../config.json');
 const { oxfordJoinArray } = require('../utils/oxfordJoinArray');
 
 const headers = {
@@ -19,6 +18,32 @@ const headers = {
 };
 
 exports.handler = async (event, context, callback) => {
+  if (!LINEAR_CONFIG) {
+    return {
+      headers: headers,
+      statusCode: 200,
+      body: JSON.stringify({
+        success: false,
+        msg:
+          'No config variable found. Check your deployment page to help generate this variable then add it to your deploy secrets.',
+      }),
+    };
+  }
+
+  const Config = JSON.parse(LINEAR_CONFIG);
+
+  if (!Config.teamId) {
+    return {
+      headers: headers,
+      statusCode: 200,
+      body: JSON.stringify({
+        success: false,
+        msg:
+          'No teamId in the config variable found. Check your deployment page to help generate this variable then add it to your deploy secrets.',
+      }),
+    };
+  }
+
   try {
     const body = JSON.parse(event.body);
 

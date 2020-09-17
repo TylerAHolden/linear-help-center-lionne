@@ -63,11 +63,12 @@ const Description = styled.span`
   letter-spacing: 0px;
 `;
 
-const OutputContainer = styled.pre`
+const OutputContainer = styled.div`
   background: rgba(255, 255, 255, 0.02);
   border-radius: 4px;
   padding: 16px;
   padding-top: 0;
+  margin-bottom: 16px;
 `;
 
 const OutputTitle = styled.p`
@@ -92,6 +93,29 @@ const BackButton = styled(Button)`
   }
 `;
 
+const CodeToCopy = styled.div`
+  white-space: pre;
+  overflow: scroll;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  scrollbar-color: dark;
+  ::-webkit-scrollbar {
+    height: 3px;
+    width: 3px;
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    -webkit-border-radius: 1ex;
+    -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+`;
+
 const ConfigFileGenerator = () => {
   const [apiToken, setApiToken] = useState('');
   const [error, setError] = useState('');
@@ -102,6 +126,7 @@ const ConfigFileGenerator = () => {
   const [project, setProject] = useState();
   const [inbox, setInbox] = useState();
   const [defaultAssignee, setDefaultAssignee] = useState();
+  const [finalConfigEnvString, setFinalConfigEnvString] = useState();
 
   const resetForm = () => {
     setApiToken('');
@@ -116,7 +141,7 @@ const ConfigFileGenerator = () => {
   };
 
   const copyConfigToClipboard = () => {
-    navigator.clipboard.writeText(JSON.stringify(config));
+    navigator.clipboard.writeText(finalConfigEnvString);
   };
 
   const getLinearConfig = async () => {
@@ -189,6 +214,14 @@ const ConfigFileGenerator = () => {
       setConfig(newConfigObject);
     }
   }, [step, defaultAssignee]);
+
+  useEffect(() => {
+    setFinalConfigEnvString(
+      `LINEAR_API_TOKEN="${apiToken}"\nLINEAR_CONFIG='${JSON.stringify(
+        config
+      )}'`
+    );
+  }, [config]);
 
   switch (step) {
     case 'input-api-token':
@@ -283,8 +316,8 @@ const ConfigFileGenerator = () => {
             Restart
           </BackButton>
           <OutputContainer>
-            <OutputTitle>/config.json</OutputTitle>
-            {JSON.stringify(config, undefined, 2)}
+            <OutputTitle>.env</OutputTitle>
+            <CodeToCopy>{finalConfigEnvString}</CodeToCopy>
           </OutputContainer>
           <Button onClick={copyConfigToClipboard}>Copy To Clipboard</Button>
         </Container>
