@@ -1,0 +1,15 @@
+{
+  "name": "help-center-serverless-functions",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.19.2",
+    "dotenv": "^8.0.0",
+    "netlify-lambda": "^1.6.3"
+  },
+  "scripts": {
+    "build": "netlify-lambda build functions",
+    "serve": "netlify-lambda serve functions"
+  },
+  "description": "Help Center Functions"
+}
