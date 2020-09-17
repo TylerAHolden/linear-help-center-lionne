@@ -4,4 +4,5 @@
 
 [template.environment]
   LINEAR_API_TOKEN = ""
+  LINEAR_CONFIG = ""
   SLACK_WEBHOOK_URL = ""
