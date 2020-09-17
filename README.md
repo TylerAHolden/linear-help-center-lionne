@@ -6,13 +6,13 @@
 
 This is simply a serverless function that accepts a JSON body and creates a ticket on [linear.app](https://linear.app).
 
+> In other words, it's an intermediary function that connects a client-side form to linear without exposing your linear API token to the client.
+
 ## Why?
 
 Have you ever needed a help center/bug report/suggest improvement form for your users? Building out your own service can get complex really quick. Paying for a third party service can get expensive... really quick. What if you needed something just a bit more organized than a slack webhook or email notification? And you wanted to set something up really quickly. Linear Help Center is the one-click deploy solution that pairs with [linear.app](https://linear.app) as the source of ticket management.
 
 ## Rough setup guide
-
-This deployment acts as the intermediary functions that connects a client-side form to linear without exposing a linear API token to the client.
 
 1. Deploy this project on netlify
    > Netlify builds and sets up the serverless function automatically
