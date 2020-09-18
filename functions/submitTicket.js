@@ -18,34 +18,43 @@ const headers = {
 };
 
 exports.handler = async (event, context, callback) => {
-  if (!LINEAR_CONFIG) {
-    return {
-      headers: headers,
-      statusCode: 200,
-      body: JSON.stringify({
-        success: false,
-        msg:
-          'No config variable found. Check your deployment page to help generate this variable then add it to your deploy secrets.',
-      }),
-    };
-  }
-
-  const Config = JSON.parse(LINEAR_CONFIG);
-
-  if (!Config.teamId) {
-    return {
-      headers: headers,
-      statusCode: 200,
-      body: JSON.stringify({
-        success: false,
-        msg:
-          'No teamId in the config variable found. Check your deployment page to help generate this variable then add it to your deploy secrets.',
-      }),
-    };
-  }
-
   try {
+    if (!LINEAR_CONFIG) {
+      return {
+        headers: headers,
+        statusCode: 200,
+        body: JSON.stringify({
+          success: false,
+          msg:
+            'No config variable found. Check your deployment page to help generate this variable then add it to your deploy secrets.',
+        }),
+      };
+    }
+
+    console.log(1);
+    console.log(LINEAR_CONFIG);
+
+    const Config = JSON.parse(LINEAR_CONFIG);
+    console.log(2);
+    if (!Config.teamId) {
+      return {
+        headers: headers,
+        statusCode: 200,
+        body: JSON.stringify({
+          success: false,
+          msg:
+            'No teamId in the config variable found. Check your deployment page to help generate this variable then add it to your deploy secrets.',
+        }),
+      };
+    }
+    
+    console.log(3);
+    console.log(event.body);
+    
     const body = JSON.parse(event.body);
+    
+    console.log(body)
+    console.log(4);
 
     // take the incoming label type string and relate it to a linear label ID
     const getTicketLabelIds = (ticketLabels = []) => {
