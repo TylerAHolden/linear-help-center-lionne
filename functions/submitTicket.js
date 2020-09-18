@@ -34,7 +34,7 @@ exports.handler = async (event, context, callback) => {
     console.log(1);
     console.log(LINEAR_CONFIG);
 
-    const Config = JSON.parse(LINEAR_CONFIG);
+    const Config = JSON.parse(JSON.stringify(LINEAR_CONFIG));
     console.log(2);
     if (!Config.teamId) {
       return {
