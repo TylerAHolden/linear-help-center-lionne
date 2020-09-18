@@ -33,8 +33,10 @@ exports.handler = async (event, context, callback) => {
 
     console.log(1);
     console.log(LINEAR_CONFIG);
+    console.log(LINEAR_CONFIG.replace(/"/g, '\"'));
+    console.log(LINEAR_CONFIG.replace(/"/g, '\"').replace(/'/g, '"'));
 
-    const Config = JSON.parse(JSON.stringify(LINEAR_CONFIG));
+    const Config = JSON.parse(LINEAR_CONFIG.replace(/"/g, '\"').replace(/'/g, '"'));
     console.log(2);
     if (!Config.teamId) {
       return {
