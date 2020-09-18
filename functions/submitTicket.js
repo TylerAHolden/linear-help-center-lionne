@@ -9,6 +9,8 @@ const { sendErrorToSlack } = require('../error_log');
 const Constants = require('../constants');
 const { oxfordJoinArray } = require('../utils/oxfordJoinArray');
 
+const JSON5 = require('json5');
+
 const headers = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers':
@@ -31,17 +33,8 @@ exports.handler = async (event, context, callback) => {
       };
     }
 
-    console.log(1);
-    console.log(LINEAR_CONFIG);
-    
-    const linearConfig = LINEAR_CONFIG;
-    console.log(5);
-        console.log(linearConfig);
-    const Config = JSON.parse(linearConfig);
-    console.log(String(LINEAR_CONFIG));
-        console.log(9);
-    // const Config = JSON.parse(String(LINEAR_CONFIG));
-    console.log(2);
+    const Config = JSON5.parse(LINEAR_CONFIG);
+
     if (!Config.teamId) {
       return {
         headers: headers,
@@ -53,14 +46,8 @@ exports.handler = async (event, context, callback) => {
         }),
       };
     }
-    
-    console.log(3);
-    console.log(event.body);
-    
+
     const body = JSON.parse(event.body);
-    
-    console.log(body)
-    console.log(4);
 
     // take the incoming label type string and relate it to a linear label ID
     const getTicketLabelIds = (ticketLabels = []) => {
